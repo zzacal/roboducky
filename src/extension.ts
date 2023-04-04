@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { ChatWindow, getWebviewOptions } from './views';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -20,6 +21,23 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(disposable);
+	
+	context.subscriptions.push(
+		vscode.commands.registerCommand('roboducky.chat', () => {
+			ChatWindow.createOrShow(context.extensionUri);
+		})
+	);
+	if (vscode.window.registerWebviewPanelSerializer) {
+		// Make sure we register a serializer in activation event
+		vscode.window.registerWebviewPanelSerializer(ChatWindow.viewType, {
+			async deserializeWebviewPanel(webviewPanel: vscode.WebviewPanel, state: any) {
+				console.log(`Got state: ${state}`);
+				// Reset the webview options so we use latest uri for `localResourceRoots`.
+				webviewPanel.webview.options = getWebviewOptions(context.extensionUri);
+				ChatWindow.revive(webviewPanel, context.extensionUri);
+			}
+		});
+	}
 }
 
 // This method is called when your extension is deactivated

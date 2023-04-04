@@ -16,7 +16,12 @@
       {
         "command": "roboducky.helloWorld",
         "title": "Hello World"
-      }
+      },
+			{
+				"command": "roboducky.chat",
+				"title": "Chat with an ai",
+				"category": "Roboducky Chat"
+			}
     ]
   },
   "scripts": {

@@ -120,20 +120,14 @@ export class ChatWindow {
     const scriptUri = webview.asWebviewUri(scriptPathOnDisk);
 
     // Local path to css styles
-    const styleResetPath = vscode.Uri.joinPath(
+    const stylesPath = vscode.Uri.joinPath(
       this._extensionUri,
       "media",
-      "reset.css"
-    );
-    const stylesPathMainPath = vscode.Uri.joinPath(
-      this._extensionUri,
-      "media",
-      "vscode.css"
+      "styles.css"
     );
 
     // Uri to load styles into webview
-    const stylesResetUri = webview.asWebviewUri(styleResetPath);
-    const stylesMainUri = webview.asWebviewUri(stylesPathMainPath);
+    const stylesUri = webview.asWebviewUri(stylesPath);
 
     // Use a nonce to only allow specific scripts to be run
     const nonce = getNonce();
@@ -151,15 +145,23 @@ export class ChatWindow {
 
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-				<link href="${stylesResetUri}" rel="stylesheet">
-				<link href="${stylesMainUri}" rel="stylesheet">
+				<link href="${stylesUri}" rel="stylesheet">
 
 				<title>Cat Coding</title>
 			</head>
-			<body>
-				<textarea id="input"></textarea> 
+      <body>
+        <section class="input-section">
+          <div class="input-form">
+            <textarea class="input" id="message"></textarea>
+            <button type="submit" class="submit" id="submit-button">
+              <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.56 122.88"><defs><style>.cls-1{fill-rule:evenodd;}</style></defs><title>send</title><path class="cls-1" d="M2.33,44.58,117.33.37a3.63,3.63,0,0,1,5,4.56l-44,115.61h0a3.63,3.63,0,0,1-6.67.28L53.93,84.14,89.12,33.77,38.85,68.86,2.06,51.24a3.63,3.63,0,0,1,.27-6.66Z"/></svg>
+            </button>
+          </div>
+        </section>
         <section id="conversation">
-
+        </section>
+        <section id="instructions">
+          Do you know how to use this?
         </section>
 				<script nonce="${nonce}" src="${scriptUri}"></script>
 			</body>

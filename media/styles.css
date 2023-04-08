@@ -1,0 +1,46 @@
+body {
+  margin: 1rem;
+}
+
+.input-form {
+  size: 100%;
+  display: flex;
+  gap: .25rem;
+}
+.input-form .submit {
+  background-color:var(--vscode-button-background);
+  color: unset;
+  border-radius: 6px;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.input-form .submit svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--vscode-button-foreground);
+}
+.input-form textarea.input {
+  resize: none;
+}
+
+.input-form .input {
+  width: 100%;
+  border-radius: 6px;
+  margin: 0 0 1rem 0;
+  height: 2.5rem;
+}
+
+#conversation {
+  width: 100%;
+  min-height: 300px;
+  border: 1px solid beige;
+  border-radius: 6px;
+}
+
+#conversation .sent {
+  display: inline-block;
+  margin: .5rem .25rem;
+  padding: .5rem;
+  background-color: var(--vscode-button-background);
+  border-radius: 6px;
+}

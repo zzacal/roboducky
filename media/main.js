@@ -9,7 +9,7 @@
     const submitBtn = /** @type {HTMLButtonElement} */ (document.getElementById('submit-button'));
     const messageInput = /** @type {HTMLTextAreaElement} */ (document.getElementById('message'));
     const conversationBox = /** @type {HTMLElement} */ (document.getElementById('conversation'));
-    const submitHandler = () => {    
+    const submit = () => {    
         const message = messageInput.value;
         const chatLine = document.createElement("div");
         const chat = document.createElement("div");
@@ -22,10 +22,19 @@
         //     command: 'alert',
         //     text: message
         // });
+        messageInput.value = "";
     };
     
-    submitBtn.addEventListener("click", submitHandler);
+    submitBtn.addEventListener("click", () => {
+        submit();
+    });
 
+    messageInput.addEventListener("keydown", (e) => {
+        if(e.key === "Enter") { 
+            e.preventDefault();
+            messageInput.value.length > 0 && submit();
+        }
+    });
     messageInput.focus();
 
     // console.log('Initial state', oldState);

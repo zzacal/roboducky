@@ -2,7 +2,7 @@
 // It cannot access the main VS Code APIs directly.
 
 (function () {
-    // const vscode = acquireVsCodeApi();
+    const vscode = acquireVsCodeApi();
 
     // const oldState = /** @type {{ count: number} | undefined} */ (vscode.getState());
 
@@ -18,12 +18,20 @@
         chat.appendChild(document.createTextNode(message));
         conversationBox.appendChild(chatLine);
         // Send a message back to the extension
-        // vscode.postMessage({
-        //     command: 'alert',
-        //     text: message
-        // });
+        vscode.postMessage({
+            command: 'ask',
+            text: message
+        });
         messageInput.value = "";
     };
+    const receive = (/** @type {string} */ message) => {
+        const chatLine = document.createElement("div");
+        const chat = document.createElement("div");
+        chat.classList.add("reveived");
+        chatLine.appendChild(chat)
+        chat.appendChild(document.createTextNode(message));
+        conversationBox.appendChild(chatLine);
+    }
     
     submitBtn.addEventListener("click", () => {
         submit();
@@ -36,6 +44,15 @@
         }
     });
     messageInput.focus();
+
+    window.addEventListener('message', event => {
+        const message = event.data; // The json data that the extension sent
+        switch (message.command) {
+            case 'respond':
+                receive(message.data);
+                break;
+        }
+    });
 
     // console.log('Initial state', oldState);
 

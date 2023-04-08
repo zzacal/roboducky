@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { ChatGptCommand } from '../ai-service';
 
 export class ChatWindow {
   public static readonly viewType = "chatWindow";
@@ -31,16 +32,21 @@ export class ChatWindow {
 
     // Handle messages from the webview
     this._panel.webview.onDidReceiveMessage(
-      (message) => {
+      async (message) => {
         switch (message.command) {
-          case "alert":
+          case "ask":
             vscode.window.showErrorMessage(message.text);
+            this.sendResponse(await getAnswer(message.text));
             return;
         }
       },
       null,
       this._disposables
     );
+  }
+
+  sendResponse(response: string) {
+    this._panel.webview.postMessage({ command: 'respond', data: response });
   }
 
   public dispose() {
@@ -186,4 +192,8 @@ function getNonce() {
 		text += possible.charAt(Math.floor(Math.random() * possible.length));
 	}
 	return text;
+}
+
+async function getAnswer(prompt: string) {
+  return ChatGptCommand.handler(prompt);
 }
